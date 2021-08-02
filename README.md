@@ -10,7 +10,7 @@ Implementation of a pre-trained CNN for recognizing the covid-19 from chest X-Ra
       One of these coronaviruses that have recently affected the lives of the world is an acute respiratory syndrome or Covid-19. 
       The outbreak of the virus started in December 2019 in Wuhan, China, and within a few months, it became a global epidemic.
 
-### chest images
+### chest dataset
 ![chest_dataset](https://user-images.githubusercontent.com/85555218/127903321-afd46702-a945-4d69-af17-01596cf4ff6d.png)
 
       One way to diagnose the disease is to have a chest scan. That is, the chest is photographed and the health of the lungs is carefully monitored.
