@@ -95,21 +95,24 @@ x_test_normal = sorted(os.listdir('./dataset/test/normal/'))
 toCSV('./dataset/train.csv', x_train_covid, x_train_normal)
 toCSV('./dataset/test.csv', x_test_covid, x_test_normal)
 
-# now save all your train data in train file and save all your test data in test file
-
 # =============================================================================
 # Load data
 # =============================================================================
 class ChestDataset(torch.utils.data.Dataset):                                 
-    def __init__(self, root, csv_file, transforms=None):                       
-        self.root = root                   
+    def __init__(self, root_covid, root_normal, csv_file, transforms=None):                       
+        self.root_covid = root_covid 
+        self.root_normal = root_normal                  
         self.csv_file = shuffle(pd.read_csv(csv_file))
         self.transforms = transforms            
     
-    def __getitem__(self, idx):                                                 
-        img_name = os.path.join(self.root, self.csv_file.iloc[idx, 0])
-        image = Image.open(img_name).convert("RGB")
+    def __getitem__(self, idx):     
         label = torch.tensor(self.csv_file.iloc[idx, 1])
+        if (label == 0):                           
+            img_name = os.path.join(self.root_normal, self.csv_file.iloc[idx, 0])
+        elif (label == 1):
+            img_name = os.path.join(self.root_covid, self.csv_file.iloc[idx, 0])
+        
+        image = Image.open(img_name).convert("RGB")
 
         if self.transforms is not None:
             image = self.transforms(image)
@@ -129,12 +132,14 @@ transform_data = transforms.Compose([
                       ),
                   ])    
 
-trainset = ChestDataset(root='./dataset/train/', 
+trainset = ChestDataset(root_covid='./dataset/train/covid',
+                        root_normal='./dataset/train/normal', 
                         csv_file='./dataset/train.csv', 
                         transforms=transform_data)
-testset = ChestDataset(root='./dataset/test/', 
-                        csv_file='./dataset/test.csv', 
-                        transforms=transform_data)
+testset = ChestDataset(root_covid='./dataset/test/covid', 
+                       root_normal='./dataset/test/normal', 
+                       csv_file='./dataset/test.csv', 
+                       transforms=transform_data)
 
 # show one image
 def imshow(img):
@@ -142,7 +147,7 @@ def imshow(img):
     # img shape => (3, h, w), img shape after transpose => (h, w, 3)
     plt.imshow(np.transpose(img.numpy(), (1, 2, 0)))
 
-img, label = trainset[200]
+img, label = testset[60]
 imshow(img)
 
 #
