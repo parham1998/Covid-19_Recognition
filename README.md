@@ -50,4 +50,4 @@ epoch  | 50
 learning rate | 0.01
 momentum  | 0.9
 weight_decay | 0.0005
-batch | 16
+batch-size | 16
